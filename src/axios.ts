@@ -8,11 +8,9 @@ export function get<T>(url: string, type: t.Type<T>, config?: AxiosRequestConfig
     .then(res => {
       const value = type.decode(res.data);
       if(isRight(value)) {
-        console.log(value.right)
         return value.right;
       } else {
-        console.log(value.left)
-        const message = PathReporter.report(value)
+        PathReporter.report(value);
         throw value.left
       }  
     })

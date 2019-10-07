@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import { get } from '../axios';
-import { Devis } from '../models/Devis';
+import React from 'react';
+import { LotMetier, LotPiece, DevisMetier, DevisPiece } from '../models/Devis';
+import { Collapse } from 'antd';
+import CardItem from '../components/CardItem';
 
-const URL = "https://api.travauxlib.com/api/devis-pro/JKusHl8Ba8MABIjdCtLZOe2lxxnUfX";
-
-const CardList = () => {
-  const [resources, setResources] = useState<Devis | null>(null);
-
-  const fetchResources = async () => {
-    const resources = await get(URL, Devis);
-    setResources(resources);
-  }
-
-  useEffect(
-    () => {
-      fetchResources()
-    },
-    []
-  );
+const CardList = (devis: DevisMetier | DevisPiece) => {
 
   return (
-    <Div>
-      {resources != null ? resources.title : ""}
-    </Div>
+    <Collapse accordion>
+      {
+        (devis.lots as Array<LotMetier | LotPiece>).map(lot => CardItem(lot))
+      }
+    </Collapse>
   );
 }
-
-const Div = styled.div({
-
-});
 
 export default CardList;
